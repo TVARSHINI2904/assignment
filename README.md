@@ -38,24 +38,6 @@ https://pdflink.to/project_image/
 
    ```bash
    https://github.com/TVARSHINI2904/assignment.git
+hjjjhkjjhkjj
 
- **2.Install required libraries** via Arduino Library Manager:
--**Blynk**
--**PubSubClient**
--**Adafruit SSD1306**
--**Adafruit GFX**
--**DallasTemperature**
--**OneWire**
-
-3.**Open the Arduino sketch** in Arduino IDE and update the following:
-- Wi-Fi SSID and Password
-- BLYNK_TEMPLATE_ID **"TMPL39sshMipF"**
-- BLYNK_TEMPLATE_NAME **"heat controller"**
-- BLYNK_AUTH_TOKEN **"e8Xm8OQs4QUUITtZawrQiBA-k2H5zdc_"**
-  
- **4.Select Board** Choose ESP32 Dev Module under Tools > Board.
-
-**5.Upload the code to your ESP32.**
-
-
-
+ 
