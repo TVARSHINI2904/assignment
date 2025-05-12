@@ -41,12 +41,17 @@ https://pdflink.to/project_image/
        - V2: Slide switch to turn system ON/OFF.
 ## System Workflow
 
--Slide switch or Blynk switch toggles system ON/OFF.
--DS18B20 reads temperature every second.
--Based on thresholds, heater is activated/deactivated through a relay.
--OLED updates live temperature, Wi-Fi, and state.
--Buzzer alerts if temperature exceeds safety threshold.
--Blynk/MQTT broadcasts live data.
+-**Slide switch or Blynk switch toggles system ON/OFF.**
+-**DS18B20 reads temperature every second.**
+-**Based on thresholds, heater is activated/deactivated through a relay.**
+-**OLED updates live temperature, Wi-Fi, and state.**
+-**Buzzer alerts if temperature exceeds safety threshold.**
+-**Blynk/MQTT broadcasts live data.**
+
+ -**BLYNK_TEMPLATE_ID** "TMPL39sshMipF"
+ -**BLYNK_TEMPLATE_NAME** "heat controller"
+ -**BLYNK_AUTH_TOKEN** "e8Xm8OQs4QUUITtZawrQiBA-k2H5zdc_"
+
 
 ## Installation
 
