@@ -42,7 +42,7 @@ https://pdflink.to/project_image/
 ## System Workflow
 
 -**Slide switch or Blynk switch**: toggles system ON/OFF.
--**DS18B20 reads temperature every second.**
+-**DS18B20 reads temperature every second.**:
 -**Based on thresholds, heater is activated/deactivated through a relay.**
 -**OLED updates live temperature, Wi-Fi, and state.**
 -**Buzzer alerts if temperature exceeds safety threshold.**
