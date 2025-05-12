@@ -54,7 +54,6 @@ https://pdflink.to/project_image/
 
 ## WOKWI PROJECT LINK 
 
-```bash
    https://wokwi.com/projects/430355918727335937
 
 
