@@ -33,12 +33,12 @@ https://pdflink.to/project_image/
 - **PubSubClient** library for MQTT communication.
   
 ## IOT Integration
--**Blynk IoT Integration**
--**Real-Time Monitoring**
-       - V0: Displays temperature.
-       - V1: Displays system state.
--**Remote Control**
-       - V2: Slide switch to turn system ON/OFF.
+- **Blynk IoT Integration**
+- **Real-Time Monitoring**
+       - **V0:** Displays temperature.
+       - **V1:** Displays system state.
+- **Remote Control**
+       - **V2:** Slide switch to turn system ON/OFF.
 ## System Workflow
 
 - **Slide switch or Blynk switch**: toggles system ON/OFF.
