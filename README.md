@@ -1,35 +1,57 @@
-# assignment
+# Smart Heater Control System with ESP32
 
-# Heater Control System with Blynk, MQTT, and OLED Display
-
-This project is a temperature-based heater control system that uses an ESP32 to control a heater based on the ambient temperature. The system also integrates Blynk for remote control, MQTT for communication, and an OLED display for monitoring the system's status.
+This project demonstrates the design and implementation of a **Smart Heater Control System** using the **ESP32 microcontroller**. The system is designed to regulate the temperature based on real-time data from a **DS18B20 temperature sensor**, and manage the heater's operation using a **relay module**. It supports **remote monitoring** and control via **Blynk IoT** and **MQTT** protocols, providing real-time updates on temperature and system state.
 
 ## Features
 
-- **Temperature Monitoring**: The system monitors temperature using a Dallas DS18B20 sensor.
-- **Heater Control**: Based on the temperature, the system can turn the heater on or off.
-- **State Management**: Displays the system state on Blynk (Idle, Heating, Stabilizing, Target Reached, Overheat).
-- **MQTT Communication**: The system sends temperature readings and state updates via MQTT.
-- **OLED Display**: Displays the current temperature, system state, WiFi status, and MQTT connection status.
-- **Remote Control**: Use the Blynk app to control the system remotely (on/off, state changes).
+- **Temperature Monitoring**: Uses DS18B20 temperature sensor for accurate temperature readings.
+- **Control Logic**: Supports multiple operational states (Idle, Heating, Stabilizing, Target Reached, Overheat) for safe and efficient heater control.
+- **Manual Control**: Includes a physical button (slide switch) to manually turn the heater on/off.
+- **Overheating Protection**: Activates a buzzer alarm if the temperature exceeds the predefined limit.
+- **Remote Monitoring**: Integrates Blynk IoT for mobile app control and MQTT for cloud-based updates.
+- **OLED Display**: Displays the current temperature, state, and Wi-Fi status for real-time feedback.
 
-## Hardware Requirements
+## Hardware Required
 
-- **ESP32** (or any compatible microcontroller with WiFi support)
-- **Dallas DS18B20 Temperature Sensor**
-- **OLED Display** (128x64, I2C)
-- **Relay Module** (to control the heater)
-- **Buzzer** (for overheat condition)
-- **Slide Switch** (to manually control the system)
-- **WiFi Router** for internet connection
-- **MQTT Broker** (Tested with Mosquitto Broker)
+- **ESP32** Microcontroller
+- **DS18B20** Temperature Sensor
+- **Relay Module** for Heater Control
+- **Buzzer** for Overheating Alarm
+- **OLED Display** (128x64)
+- **Slide Switch** for manual heater control
+- **Jumper Wires & Breadboard**
 
-## Software Requirements
+## Circuit Diagram
 
-- **Arduino IDE** (with ESP32 board support)
-- **Blynk Library** for ESP32
-- **PubSubClient** for MQTT
-- **Adafruit SSD1306** for OLED display
-- **DallasTemperature** for temperature sensor control
-- **OneWire** for communication with DS18B20 senso
+https://pdflink.to/project_image/
+
+
+## Software Required
+
+- **Arduino IDE** for programming the ESP32.
+- **Blynk** app for remote monitoring and control.
+- **PubSubClient** library for MQTT communication.
+
+## Installation
+
+1. **Clone this repository** to your local machine:
+
+   ```bash
+   https://github.com/TVARSHINI2904/assignment.git
+
+   Install required libraries via Arduino Library Manager:
+
+Blynk
+
+PubSubClient
+
+Adafruit SSD1306
+
+Adafruit GFX
+
+DallasTemperature
+
+OneWire
+
+
 
