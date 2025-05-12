@@ -1,0 +1,220 @@
+#define BLYNK_TEMPLATE_ID "TMPL39sshMipF"
+#define BLYNK_TEMPLATE_NAME "heat controller"
+#define BLYNK_AUTH_TOKEN "e8Xm8OQs4QUUITtZawrQiBA-k2H5zdc_"
+
+#include<WiFi.h>
+#include<PubSubClient.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <esp_timer.h>
+#include <BlynkSimpleEsp32.h>
+#include <DallasTemperature.h>
+#include <OneWire.h>
+#include <esp32-hal-ledc.h>
+
+
+#define ONE_WIRE_BUS 15
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+bool systemon = false;
+
+
+esp_timer_handle_t periodic_timer;
+volatile bool flag = false;
+#define VPIN_TEMP V0
+#define VPIN_STATE V1
+#define VPIN_SLIDE_SWITCH V2
+
+void periodicTimerCallback(void* arg) {
+  flag = true;
+}
+
+Adafruit_SSD1306 display(128,64,&Wire,-1);
+void updateOLED(float temperature, String state); // Declaration
+
+
+//wifi credentials
+
+const char* ssid="Wokwi-GUEST";
+const char* password="";
+
+bool ledStatus = false; // Tracks   LED state
+
+#define   LED 26    //built-in   LED is pin 2
+
+hw_timer_t * timer = NULL;
+portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+
+
+float temperature = 0;
+
+#define RELAY_PIN 27
+#define BUZZER_PIN 25
+#define DS18B20_PIN 15
+#define SWITCH_PIN 14
+
+
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(SWITCH_PIN, INPUT);
+  pinMode(  LED, OUTPUT);
+   pinMode(RELAY_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+  digitalWrite( LED, LOW); // Start with  LED off
+  digitalWrite(BUZZER_PIN, LOW);  // Add this in setup
+
+sensors.begin();
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Default I2C address
+  Serial.println(F("SSD1306 allocation failed"));
+  while (true); // Halt
+}
+display.clearDisplay();
+display.setTextSize(1);
+display.setTextColor(SSD1306_WHITE);
+display.setCursor(0, 0);
+display.println("Starting...");
+display.display();
+delay(1000);
+
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to WiFi");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("\nConnected to WiFi");
+
+
+const esp_timer_create_args_t periodic_timer_args = {
+    .callback = &periodicTimerCallback,
+    .arg = nullptr,
+    .dispatch_method = ESP_TIMER_TASK,
+    .name = "periodic_timer"
+  };
+
+  esp_timer_create(&periodic_timer_args, &periodic_timer);
+  esp_timer_start_periodic(periodic_timer, 1000000);  // 1 second in microseconds
+
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, password);
+Serial.println("Connecting to Blynk...");
+}
+
+BLYNK_WRITE(VPIN_SLIDE_SWITCH) {
+  systemon = param.asInt(); // If the slide switch is ON (1), systemOn will be true
+}
+
+
+void loop() {
+ 
+  Blynk.run();
+  static bool lastSwitchState = false;
+bool currentSwitchState = digitalRead(SWITCH_PIN);
+
+if (currentSwitchState != lastSwitchState) {
+  lastSwitchState = currentSwitchState;
+  systemon = currentSwitchState;
+
+  // Reflect the new state in Blynk app
+  Blynk.virtualWrite(VPIN_SLIDE_SWITCH, systemon);
+  Serial.print("Slide switch toggled. System is now: ");
+  Serial.println(systemon ? "ON" : "OFF");
+}
+  if (flag) {
+    portENTER_CRITICAL(&timerMux);
+    flag = false;
+    portEXIT_CRITICAL(&timerMux);
+    readAndPublishTemperature();
+  }
+}
+
+
+
+void  readAndPublishTemperature() 
+{
+  
+  sensors.requestTemperatures();  // Request temperature readings
+  temperature = sensors.getTempCByIndex(0);
+
+ 
+
+  Serial.println(temperature);
+  char payload[10]; // buffer array size is proportional to message that wanted to be sent
+  snprintf(payload, sizeof(payload), "%.2f",temperature);
+
+String state = "OFF";
+
+   if (systemon) {
+    if (temperature < 20) {
+      state = "Idle";
+      digitalWrite(RELAY_PIN, LOW);
+      ledStatus = false;
+      noTone(BUZZER_PIN);
+    } else if (temperature < 30) {
+      state = "Heating";
+      digitalWrite(RELAY_PIN, HIGH);
+      ledStatus = true;
+      noTone(BUZZER_PIN);
+    } else if (temperature < 35) {
+      state = "Stabilizing";
+      digitalWrite(RELAY_PIN, HIGH);
+      ledStatus = true;
+      noTone(BUZZER_PIN);
+    } else if (temperature <= 37) {
+      state = "Target Reached";
+      digitalWrite( RELAY_PIN, LOW);
+      ledStatus = false;
+      noTone(BUZZER_PIN);
+    } else {
+      state = "Overheat";
+      digitalWrite( RELAY_PIN, LOW);
+      tone(BUZZER_PIN, 2000);
+      ledStatus = false;
+      Serial.println("Overheat! Turning off heater.");
+    }
+   }
+  if (!systemon) {
+  state = "System OFF";
+  digitalWrite(RELAY_PIN, LOW);
+  ledStatus = false;
+  noTone(BUZZER_PIN);
+  Serial.println("System is OFF. Heater is disabled.");
+}
+    updateOLED(temperature, state);
+
+
+  // Serial log
+  
+  Serial.print(" | Temp: ");
+  Serial.print(temperature, 2);
+  Serial.print(" °C | State: ");
+  Serial.println(state);
+
+  
+Blynk.virtualWrite(VPIN_TEMP, temperature); 
+  Blynk.virtualWrite(VPIN_STATE, state); 
+
+  // Printing message value on Serial Monitor and waiting
+  Serial.println();
+  
+}
+
+void updateOLED(float temp, String state) {
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.print("Temp: ");
+  display.print(temp, 1);
+  display.println(" C");
+
+  display.print("State: ");
+  display.println(state);
+
+  display.print("WiFi: ");
+  display.println(WiFi.isConnected() ? "OK" : "FAIL");
+
+  
+  display.display();
+}
