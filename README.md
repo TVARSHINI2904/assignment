@@ -31,13 +31,28 @@ https://pdflink.to/project_image/
 - **Arduino IDE** for programming the ESP32.
 - **Blynk** app for remote monitoring and control.
 - **PubSubClient** library for MQTT communication.
+  
+## IOT Integration
+-**Blynk IoT Integration**
+-**Real-Time Monitoring**
+      V0: Displays temperature.
+      V1: Displays system state.
+-**Remote Control**
+      V2: Slide switch to turn system ON/OFF.
+-**System Workflow**
+
+Slide switch or Blynk switch toggles system ON/OFF.
+DS18B20 reads temperature every second.
+Based on thresholds, heater is activated/deactivated through a relay.
+OLED updates live temperature, Wi-Fi, and state.
+Buzzer alerts if temperature exceeds safety threshold.
+Blynk/MQTT broadcasts live data.
 
 ## Installation
 
-**1.Clone this repository** to your local machine:
+**Clone this repository** to your local machine:
 
    ```bash
    https://github.com/TVARSHINI2904/assignment.git
-hjjjhkjjhkjj
 
  
