@@ -52,6 +52,11 @@ https://pdflink.to/project_image/
  - **BLYNK_TEMPLATE_NAME** "heat controller"
  - **BLYNK_AUTH_TOKEN** "e8Xm8OQs4QUUITtZawrQiBA-k2H5zdc_"
 
+## WOKWI PROJECT LINK 
+
+```bash
+   https://wokwi.com/projects/430355918727335937
+
 
 ## Installation
 
