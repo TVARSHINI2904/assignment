@@ -35,18 +35,18 @@ https://pdflink.to/project_image/
 ## IOT Integration
 -**Blynk IoT Integration**
 -**Real-Time Monitoring**
-      V0: Displays temperature.
-      V1: Displays system state.
+       - V0: Displays temperature.
+       - V1: Displays system state.
 -**Remote Control**
-      V2: Slide switch to turn system ON/OFF.
--**System Workflow**
+       - V2: Slide switch to turn system ON/OFF.
+## System Workflow
 
-Slide switch or Blynk switch toggles system ON/OFF.
-DS18B20 reads temperature every second.
-Based on thresholds, heater is activated/deactivated through a relay.
-OLED updates live temperature, Wi-Fi, and state.
-Buzzer alerts if temperature exceeds safety threshold.
-Blynk/MQTT broadcasts live data.
+-Slide switch or Blynk switch toggles system ON/OFF.
+-DS18B20 reads temperature every second.
+-Based on thresholds, heater is activated/deactivated through a relay.
+-OLED updates live temperature, Wi-Fi, and state.
+-Buzzer alerts if temperature exceeds safety threshold.
+-Blynk/MQTT broadcasts live data.
 
 ## Installation
 
